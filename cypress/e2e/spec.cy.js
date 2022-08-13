@@ -46,20 +46,38 @@ describe('Read File', () => {
     cy.get('tbody>tr')
       .each(function ($row, index, $rows) {
 
-        cy.wrap($row).within(function () {
-          cy.get('td')
-            .each(function ($cellData, index, $columns) {
-              cy.log('index', index)
-              cy.log('cell', $cellData.text())
+        if (index >= 13 && index <= 16) {
+          cy.wrap($row).within(function () {
+            cy.get('td')
+              .each(function ($cellData, index, $columns) {
+                cy.log('index', index)
+                cy.log('cell', $cellData.text())
 
-              if (index == 1)
-                values.push($cellData.text().replace(/\r?\n|\r/g, "").trim())
-              else
-                keys.push($cellData.text().replace(/\r?\n|\r/g, ""))
-            }
-            )
+                if (index == 2)
+                  values.push($cellData.text().replace(/\r?\n|\r/g, "").trim())
+                else if (index == 1)
+                  keys.push($cellData.text().replace(/\r?\n|\r/g, "").trim())
+              }
+              )
+          }
+          )
         }
-        )
+        else {
+          cy.wrap($row).within(function () {
+            cy.get('td')
+              .each(function ($cellData, index, $columns) {
+                cy.log('index', index)
+                cy.log('cell', $cellData.text())
+
+                if (index == 1)
+                  values.push($cellData.text().replace(/\r?\n|\r/g, "").trim())
+                else
+                  keys.push($cellData.text().replace(/\r?\n|\r/g, "").trim())
+              }
+              )
+          }
+          )
+        }
       }
       ).then(() => {
         for (let index = 0; index < keys.length; ++index) {
