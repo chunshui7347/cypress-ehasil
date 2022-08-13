@@ -37,21 +37,35 @@ describe('Submit', () => {
 });
 
 describe('Read File', () => {
-  const results = [];
+  const keys = [];
+  const values = [];
+  const result = {};
 
   it('Scrape Data', function () {
+    cy.wait(2000)
     cy.get('tbody>tr')
       .each(function ($row, index, $rows) {
 
         cy.wrap($row).within(function () {
           cy.get('td')
             .each(function ($cellData, index, $columns) {
-              cy.log('test', $cellData.text())
+              cy.log('index', index)
+              cy.log('cell', $cellData.text())
+
+              if (index == 1)
+                values.push($cellData.text().replace(/\r?\n|\r/g, "").trim())
+              else
+                keys.push($cellData.text().replace(/\r?\n|\r/g, ""))
             }
             )
         }
         )
       }
-      )
+      ).then(() => {
+        for (let index = 0; index < keys.length; ++index) {
+          result[keys[index]] = values[index];
+        }
+        cy.writeFile("xlsxData.json", JSON.stringify(result))
+      });
   })
 });
