@@ -26,12 +26,32 @@ describe('Search', () => {
   });
 
   it('Find No Hak Milik ', () => {
-    cy.get('input[ng-model="$ctrl.objItem.noHakmilik"]').type(99999)
+    cy.get('input[ng-model="$ctrl.objItem.noHakmilik"]').type(45451)
   });
 });
 
 describe('Submit', () => {
   it('Carian ', () => {
-    cy.get('.form-horizontal').eq(1).find('button').contains('Cari').click();
+    cy.get('.form-horizontal').eq(1).find('button').contains('Cari').click()
   });
+});
+
+describe('Read File', () => {
+  const results = [];
+
+  it('Scrape Data', function () {
+    cy.get('tbody>tr')
+      .each(function ($row, index, $rows) {
+
+        cy.wrap($row).within(function () {
+          cy.get('td')
+            .each(function ($cellData, index, $columns) {
+              cy.log('test', $cellData.text())
+            }
+            )
+        }
+        )
+      }
+      )
+  })
 });
