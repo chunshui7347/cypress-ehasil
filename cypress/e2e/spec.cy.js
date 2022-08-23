@@ -80,10 +80,12 @@ describe('Read File', () => {
         }
       }
       ).then(() => {
-        for (let index = 0; index < keys.length; ++index) {
-          result[keys[index]] = values[index];
-        }
-        cy.writeFile("xlsxData.json", JSON.stringify(result))
+        // for (let index = 0; index < keys.length; ++index) {
+        //   result[keys[index]] = values[index];
+        // }
+        // cy.writeFile("xlsxData.json", JSON.stringify(result))
+        cy.writeFile("xlsxData.csv", JSON.stringify(values.join()))
+
       });
   })
 });
